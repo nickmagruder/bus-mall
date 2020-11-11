@@ -4,8 +4,13 @@ var imageTwo = document.getElementById('image-two');
 var imageThree = document.getElementById('image-three');
 var results = document.getElementById('results');
 
+var ctx = document.getElementById('myChart').getContext('2d');
+var chartLabels = [];
+var chartData = [];
+
 var products = [];
 var randomNumbers = [];
+var lastThree = [];
 var rounds = 0;
 
 var Product = function (name, fileType) {
@@ -42,13 +47,11 @@ function randomizer() {
     randomNumbers = [];
     for (var i = 0; i < 3; i++) {
         var randomNumber = generateRandom();
-        while (randomNumbers.includes(randomNumber)) {
+        while (lastThree.includes(randomNumber) || randomNumbers.includes(randomNumber)) {
             randomNumber = generateRandom();
         }
         randomNumbers.unshift(randomNumber);
-    }
-    while (randomNumbers.length > 3) {
-        randomNumbers.pop();
+        lastThree.unshift(randomNumber);
     }
 }
 function generateRandom() {
@@ -56,6 +59,7 @@ function generateRandom() {
 }
 
 function imageRender() {
+    lastThree = randomNumbers;
     randomizer();
 
     imageOne.src = products[randomNumbers[0]].filePath;
@@ -87,6 +91,36 @@ function imageVotes(e) {
 
     if (rounds === 25) {
         containerElement.removeEventListener('click', imageVotes);
+
+        imageOne.src = '';
+        imageOne.title = '';
+        imageOne.alt = '';
+
+        imageTwo.src = '';
+        imageTwo.title = '';
+        imageTwo.alt = '';
+
+        imageThree.src = '';
+        imageThree.title = '';
+        imageThree.alt = '';
+
+        chartDataCreator();
+        chartLabelsCreator()
+        insertChart();
+    }
+}
+
+function chartDataCreator() {
+    for (var i = 0; i < products.length; i++) {
+        chartData.push(products[i].votes);
+        chartData.push(products[i].views);
+    }
+}
+
+function chartLabelsCreator() {
+    for (var i = 0; i < products.length; i++) {
+        chartLabels.push(products[i].alt + ' votes');
+        chartLabels.push(products[i].alt + ' views');
     }
 }
 
@@ -94,8 +128,109 @@ containerElement.addEventListener('click', imageVotes);
 
 imageRender();
 
-
-// for chart.js chart:
-// Make a loop to generate array of vote count and names
-// loop over products array
-// wrap the chart code in a a function, then call the function when we hit 25
+function insertChart() {
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: '# of Votes and # of Views',
+                data: chartData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
