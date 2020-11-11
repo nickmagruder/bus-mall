@@ -2,69 +2,100 @@ var containerElement = document.getElementById('images');
 var imageOne = document.getElementById('image-one');
 var imageTwo = document.getElementById('image-two');
 var imageThree = document.getElementById('image-three');
+var results = document.getElementById('results');
 
 var products = [];
-
 var randomNumbers = [];
+var rounds = 0;
 
-var Product = function (name) {
-    this.filePath = `img/${name}.jpg`; //will have to fix .jpg issue
-    this.name = name;
-    this.alt = name;
+var Product = function (name, fileType) {
+    this.filePath = `img/${name}.${fileType}`;
+    this.alt = this.title = name;
     this.votes = 0;
     this.views = 0;
 
     products.push(this);
 }
 
-new Product('bag');
-new Product('banana');
-new Product('bathroom');
-new Product('boots');
-new Product('breakfast');
-new Product('bubblegum');
-new Product('chair');
-new Product('cthulhu');
-new Product('dog-duck');
-new Product('dragon');
-new Product('pen');
-new Product('pet-sweep');
-new Product('scissors');
-new Product('shark');
-new Product('sweep');       //.png *******
-new Product('tauntaun');
-new Product('unicorn');
-new Product('usb');         //.gif *******
-new Product('water-can');
-new Product('wine-glass');
+new Product('bag', 'jpg');
+new Product('banana', 'jpg');
+new Product('bathroom', 'jpg');
+new Product('boots', 'jpg');
+new Product('breakfast', 'jpg');
+new Product('bubblegum', 'jpg');
+new Product('chair', 'jpg');
+new Product('cthulhu', 'jpg');
+new Product('dog-duck', 'jpg');
+new Product('dragon', 'jpg');
+new Product('pen', 'jpg');
+new Product('pet-sweep', 'jpg');
+new Product('scissors', 'jpg');
+new Product('shark', 'jpg');
+new Product('sweep', 'png');
+new Product('tauntaun', 'jpg');
+new Product('unicorn', 'jpg');
+new Product('usb', 'gif');
+new Product('water-can', 'jpg');
+new Product('wine-glass', 'jpg');
 
 function randomizer() {
-    var limit = 3;
-    var amount = 3;
-    var lowest = 0;
-    var highest = products.length;                   //randomizer adapted from: https://stackoverflow.com/questions/8378870/generating-unique-random-numbers-integers-between-0-and-x/43697217
-    if (amount > limit) limit = amount;
-    while (randomNumbers.length < limit) {
-        var random_number = Math.floor(Math.random() * (highest - lowest) + lowest);
-        if (randomNumbers.indexOf(random_number) == -1) {
-            randomNumbers.push(random_number);
+    randomNumbers = [];
+    for (var i = 0; i < 3; i++) {
+        var randomNumber = generateRandom();
+        while (randomNumbers.includes(randomNumber)) {
+            randomNumber = generateRandom();
         }
+        randomNumbers.unshift(randomNumber);
     }
+    while (randomNumbers.length > 3) {
+        randomNumbers.pop();
+    }
+}
+function generateRandom() {
+    return Math.floor(Math.random() * products.length);
 }
 
 function imageRender() {
-    randomizer()
+    randomizer();
+
     imageOne.src = products[randomNumbers[0]].filePath;
     imageOne.title = products[randomNumbers[0]].title;
     imageOne.alt = products[randomNumbers[0]].alt;
+    products[randomNumbers[0]].views++;
 
     imageTwo.src = products[randomNumbers[1]].filePath;
     imageTwo.title = products[randomNumbers[1]].title;
     imageTwo.alt = products[randomNumbers[1]].alt;
+    products[randomNumbers[1]].views++;
 
     imageThree.src = products[randomNumbers[2]].filePath;
     imageThree.title = products[randomNumbers[2]].title;
     imageThree.alt = products[randomNumbers[2]].alt;
+    products[randomNumbers[2]].views++;
 }
 
-imageRender()
+function imageVotes(e) {
+    var clickTitle = e.target.title;
+    for (var i = 0; i < products.length; i++) {
+        if (clickTitle === products[i].title) {
+            products[i].votes++;
+            rounds++;
+        }
+    }
+
+    imageRender();
+
+    if (rounds === 25) {
+        containerElement.removeEventListener('click', imageVotes);
+    }
+}
+
+containerElement.addEventListener('click', imageVotes);
+
+imageRender();
+
+
+// for chart.js chart:
+// Make a loop to generate array of vote count and names
+// loop over products array
+// wrap the chart code in a a function, then call the function when we hit 25
