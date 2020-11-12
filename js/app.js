@@ -1,3 +1,5 @@
+var products = [];
+
 var containerElement = document.getElementById('images');
 var imageOne = document.getElementById('image-one');
 var imageTwo = document.getElementById('image-two');
@@ -8,7 +10,6 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var chartLabels = [];
 var chartData = [];
 
-var products = [];
 var randomNumbers = [];
 var lastThree = [];
 var rounds = 0;
@@ -18,30 +19,42 @@ var Product = function (name, fileType) {
     this.alt = this.title = name;
     this.votes = 0;
     this.views = 0;
+    this.fileType = fileType;
 
     products.push(this);
 }
 
-new Product('bag', 'jpg');
-new Product('banana', 'jpg');
-new Product('bathroom', 'jpg');
-new Product('boots', 'jpg');
-new Product('breakfast', 'jpg');
-new Product('bubblegum', 'jpg');
-new Product('chair', 'jpg');
-new Product('cthulhu', 'jpg');
-new Product('dog-duck', 'jpg');
-new Product('dragon', 'jpg');
-new Product('pen', 'jpg');
-new Product('pet-sweep', 'jpg');
-new Product('scissors', 'jpg');
-new Product('shark', 'jpg');
-new Product('sweep', 'png');
-new Product('tauntaun', 'jpg');
-new Product('unicorn', 'jpg');
-new Product('usb', 'gif');
-new Product('water-can', 'jpg');
-new Product('wine-glass', 'jpg');
+firstProductInstantiation();
+
+console.log(products);
+
+function firstProductInstantiation() {
+    if (localStorage.lsproducts) {
+        var LSproducts = localStorage.getItem('lsproducts');
+        products = JSON.parse(LSproducts);
+    } else {
+        new Product('bag', 'jpg');      
+        new Product('banana', 'jpg');
+        new Product('bathroom', 'jpg');
+        new Product('boots', 'jpg');
+        new Product('breakfast', 'jpg');
+        new Product('bubblegum', 'jpg');
+        new Product('chair', 'jpg');
+        new Product('cthulhu', 'jpg');
+        new Product('dog-duck', 'jpg');
+        new Product('dragon', 'jpg');
+        new Product('pen', 'jpg');
+        new Product('pet-sweep', 'jpg');
+        new Product('scissors', 'jpg');
+        new Product('shark', 'jpg');
+        new Product('sweep', 'png');
+        new Product('tauntaun', 'jpg');
+        new Product('unicorn', 'jpg');
+        new Product('usb', 'gif');
+        new Product('water-can', 'jpg');
+        new Product('wine-glass', 'jpg');
+    }
+}
 
 function randomizer() {
     randomNumbers = [];
@@ -105,9 +118,15 @@ function imageVotes(e) {
         imageThree.alt = '';
 
         chartDataCreator();
-        chartLabelsCreator()
+        chartLabelsCreator();
         insertChart();
+        productsToLS();
     }
+}
+
+function productsToLS() {
+    var stringifiedProducts = JSON.stringify(products);
+    localStorage.setItem('lsproducts', stringifiedProducts);
 }
 
 function chartDataCreator() {
