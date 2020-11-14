@@ -2,7 +2,15 @@ img{
     width: 25%;
 }
 
-canvas {
+#images{
+    display: float;
+}
+
+canvas !important{
     width: 75%;
     max-height: 75%;
+}
+
+ul {
+    display: flex;
 }
