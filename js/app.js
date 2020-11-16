@@ -1,3 +1,4 @@
+//universal variables
 var products = [];
 
 var containerElement = document.getElementById('images');
@@ -14,6 +15,7 @@ var randomNumbers = [];
 var lastThree = [];
 var rounds = 0;
 
+// primary constructor function for buidling product image list
 var Product = function (name, fileType) {
     this.filePath = `img/${name}.${fileType}`;
     this.alt = this.title = name;
@@ -28,6 +30,7 @@ firstProductInstantiation();
 
 console.log(products);
 
+// loop to check local storage, and if empty, populate the products array with Product objects
 function firstProductInstantiation() {
     if (localStorage.lsproducts) {
         var LSproducts = localStorage.getItem('lsproducts');
@@ -56,6 +59,7 @@ function firstProductInstantiation() {
     }
 }
 
+// make random numbers for both the randomNumbers and lastThree arrays, prevents dupes and reusing numbers from the last 3 images used
 function randomizer() {
     randomNumbers = [];
     for (var i = 0; i < 3; i++) {
@@ -71,6 +75,7 @@ function generateRandom() {
     return Math.floor(Math.random() * products.length);
 }
 
+// function for rendering the 3 image and tallying views of each image
 function imageRender() {
     lastThree = randomNumbers;
     randomizer();
@@ -91,6 +96,7 @@ function imageRender() {
     products[randomNumbers[2]].views++;
 }
 
+// function for tallying votes for each image and total rounds
 function imageVotes(e) {
     var clickTitle = e.target.title;
     for (var i = 0; i < products.length; i++) {
@@ -102,6 +108,7 @@ function imageVotes(e) {
 
     imageRender();
 
+    // blanks out current images, creates chart and saves to local storage after 25 rounds
     if (rounds === 25) {
         containerElement.removeEventListener('click', imageVotes);
 
@@ -124,11 +131,13 @@ function imageVotes(e) {
     }
 }
 
+// save to LS
 function productsToLS() {
     var stringifiedProducts = JSON.stringify(products);
     localStorage.setItem('lsproducts', stringifiedProducts);
 }
 
+// generates chart lebel data array
 function chartDataCreator() {
     for (var i = 0; i < products.length; i++) {
         chartData.push(products[i].votes);
@@ -136,6 +145,8 @@ function chartDataCreator() {
     }
 }
 
+
+// generates chart product-names labels array
 function chartLabelsCreator() {
     for (var i = 0; i < products.length; i++) {
         chartLabels.push(products[i].alt + ' votes');
@@ -147,6 +158,7 @@ containerElement.addEventListener('click', imageVotes);
 
 imageRender();
 
+// chart.js code:
 function insertChart() {
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -156,46 +168,46 @@ function insertChart() {
                 label: '# of Votes and # of Views',
                 data: chartData,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',

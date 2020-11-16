@@ -1,12 +1,42 @@
+body{
+    background-color: rgb(190, 234, 255);
+    font-family: verdana;
+}
+
+h1{
+    font-size: 40px;
+    border: 5px black solid;
+    padding: 15px;
+    margin: 15px;
+    width: 85%;
+}
+
+#instructions{
+    border: 5px black solid;
+    padding: 15px;
+    margin: 15px;
+    width: 85%;
+    font-size: 25px;
+}
+
+header{
+    display: block;
+}
+
 img{
-    width: 25%;
+    max-width: 25%;
+    max-height: 25%;
+    border: 5px black solid;
+    padding: 15px;
+    margin: 15px;
 }
 
 #images{
-    display: float;
+    display: flex;
+
 }
 
-canvas !important{
+canvas {
     width: 75%;
     max-height: 75%;
 }
